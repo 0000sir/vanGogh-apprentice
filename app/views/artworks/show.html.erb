@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+#<%= @artwork.id %>
+<table>
+<tr>
+<th>Source</th>
+<th>Style</th>
+<th>Output</th>
+<th>Status</th>
+</tr>
+<tr>
+<td>
+  <%= link_to(image_tag(@artwork.source_file.url(:medium)), @artwork.source_file.url(:large)) %>
+</td>
+<td>
+  <%= link_to(image_tag(@artwork.style_file.url(:medium)), @artwork.style_file.url(:large)) %>
+</td>
+
+<td>
+  <%= link_to( image_tag(@artwork.output_file.url(:medium)), @artwork.output_file.url(:large) ) unless @artwork.output_file.nil? %>
+</td>
+
+<td>
+  <strong>Status:</strong>
+  <%= Artwork::STATUS[@artwork.status] %>
+</td>
+</tr>
+</table>
+<%= link_to 'Edit', edit_artwork_path(@artwork) %> |
+<%= link_to 'Back', artworks_path %>
