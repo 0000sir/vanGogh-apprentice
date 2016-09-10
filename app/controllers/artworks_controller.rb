@@ -1,6 +1,8 @@
 class ArtworksController < ApplicationController
   before_action :set_artwork, only: [:show, :edit, :update, :destroy]
-  skip_before_action :verify_authenticity_token, :only=>:create
+  before_action :set_style, only: [:create]
+  skip_before_action :verify_authenticity_token, :if => Proc.new{|c| c.request.format=='application/json'}
+  before_action :api_auth, :if => Proc.new{|c| c.request.format=='application/json'}
 
   # GET /artworks
   # GET /artworks.json
@@ -25,7 +27,15 @@ class ArtworksController < ApplicationController
   # POST /artworks
   # POST /artworks.json
   def create
-    @artwork = Artwork.new(artwork_params)
+    exsiting = Artwork.where(:source_file_fingerprint=>artwork_params[:source_file_fingerprint],
+               :style_id=>artwork_params[:style_id]).first
+    
+    if exsiting.nil?
+      @artwork = Artwork.new(artwork_params)
+    else
+      @artwork = exsiting 
+      @artwork.call_it_back!
+    end
 
     respond_to do |format|
       if @artwork.save
@@ -67,9 +77,18 @@ class ArtworksController < ApplicationController
     def set_artwork
       @artwork = Artwork.find(params[:id])
     end
+    
+    def set_style
+      if params[:artwork][:style_id].blank?
+        style = Style.fetch params[:artwork][:style][:fingerprint], params[:artwork][:style][:source]
+        params[:artwork][:style_id] = style.id
+      end
+      params[:artwork][:style] = nil
+    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def artwork_params
-      params.require(:artwork).permit(:source_file, :style_file, :ext_arg)
+      params.require(:artwork).permit(:source_file, :style_id, :ext_arg,
+         :source_file_fingerprint, :callback, style: [:fingerprint, :source])
     end
 end

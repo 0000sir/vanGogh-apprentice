@@ -1,33 +1,40 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Artworks</h1>
-
-<table>
+<%- model_class = Artwork -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Source file</th>
-      <th>Style file</th>
-      <th>Output file</th>
-      <th>Status</th>
-      <th colspan="3"></th>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th>Source</th>
+      <th>Style</th>
+      <th>Output</th>
+      <th><%= model_class.human_attribute_name(:status) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
-
   <tbody>
     <% @artworks.each do |artwork| %>
       <tr>
-        <td><%= image_tag artwork.source_file.url(:thumb) %></td>
-        <td><%= image_tag artwork.style_file.url(:thumb) %></td>
-        <td><%= image_tag artwork.output_file.url(:thumb) unless artwork.output_file.nil?%></td>
-        <td><%= Artwork::STATUS[artwork.status] %></td>
-        <td><%= link_to 'Show', artwork %></td>
-        <td><%= link_to 'Edit', edit_artwork_path(artwork) %></td>
-        <td><%= link_to 'Destroy', artwork, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to artwork.id, artwork_path(artwork) %></td>
+        <td><%= image_tag artwork.source_file.url(:medium) %></td>
+        <td><%= image_tag artwork.style.image.url(:medium) %></td>
+        <td><%= image_tag artwork.output_file.url(:medium) %></td>
+        <td><%= artwork.status %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_artwork_path(artwork), :class => 'btn btn-default btn-xs' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      artwork_path(artwork),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-xs btn-danger' %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'New Artwork', new_artwork_path %>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_artwork_path,
+            :class => 'btn btn-primary' %>

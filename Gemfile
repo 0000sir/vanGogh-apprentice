@@ -51,3 +51,6 @@ gem 'paperclip'
 gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'daemons'
+gem 'rest-client'
+gem "less-rails"
+gem "twitter-bootstrap-rails"

@@ -1,29 +1,43 @@
-<p id="notice"><%= notice %></p>
-#<%= @artwork.id %>
-<table>
-<tr>
-<th>Source</th>
-<th>Style</th>
-<th>Output</th>
-<th>Status</th>
-</tr>
-<tr>
-<td>
-  <%= link_to(image_tag(@artwork.source_file.url(:medium)), @artwork.source_file.url(:large)) %>
-</td>
-<td>
-  <%= link_to(image_tag(@artwork.style_file.url(:medium)), @artwork.style_file.url(:large)) %>
-</td>
+<%- model_class = Artwork -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+</div>
 
-<td>
-  <%= link_to( image_tag(@artwork.output_file.url(:medium)), @artwork.output_file.url(:large) ) unless @artwork.output_file.nil? %>
-</td>
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:source_file_file_name) %>:</strong></dt>
+  <dd><%= @artwork.source_file_file_name %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:source_file_content_type) %>:</strong></dt>
+  <dd><%= @artwork.source_file_content_type %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:source_file_file_size) %>:</strong></dt>
+  <dd><%= @artwork.source_file_file_size %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:source_file_updated_at) %>:</strong></dt>
+  <dd><%= @artwork.source_file_updated_at %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:output_file_file_name) %>:</strong></dt>
+  <dd><%= @artwork.output_file_file_name %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:output_file_content_type) %>:</strong></dt>
+  <dd><%= @artwork.output_file_content_type %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:output_file_file_size) %>:</strong></dt>
+  <dd><%= @artwork.output_file_file_size %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:output_file_updated_at) %>:</strong></dt>
+  <dd><%= @artwork.output_file_updated_at %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:status) %>:</strong></dt>
+  <dd><%= @artwork.status %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:ext_arg) %>:</strong></dt>
+  <dd><%= @artwork.ext_arg %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:style_id) %>:</strong></dt>
+  <dd><%= @artwork.style_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:source_file_fingerprint) %>:</strong></dt>
+  <dd><%= @artwork.source_file_fingerprint %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:callback) %>:</strong></dt>
+  <dd><%= @artwork.callback %></dd>
+</dl>
 
-<td>
-  <strong>Status:</strong>
-  <%= Artwork::STATUS[@artwork.status] %>
-</td>
-</tr>
-</table>
-<%= link_to 'Edit', edit_artwork_path(@artwork) %> |
-<%= link_to 'Back', artworks_path %>
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              artworks_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_artwork_path(@artwork), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              artwork_path(@artwork),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>

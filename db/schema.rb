@@ -10,17 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160809004006) do
+ActiveRecord::Schema.define(version: 20160910105632) do
 
   create_table "artworks", force: :cascade do |t|
     t.string   "source_file_file_name"
     t.string   "source_file_content_type"
     t.integer  "source_file_file_size"
     t.datetime "source_file_updated_at"
-    t.string   "style_file_file_name"
-    t.string   "style_file_content_type"
-    t.integer  "style_file_file_size"
-    t.datetime "style_file_updated_at"
     t.string   "output_file_file_name"
     t.string   "output_file_content_type"
     t.integer  "output_file_file_size"
@@ -29,6 +25,9 @@ ActiveRecord::Schema.define(version: 20160809004006) do
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.string   "ext_arg"
+    t.integer  "style_id"
+    t.string   "source_file_fingerprint"
+    t.string   "callback"
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -44,6 +43,16 @@ ActiveRecord::Schema.define(version: 20160809004006) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "styles", force: :cascade do |t|
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.string   "image_fingerprint"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
 end

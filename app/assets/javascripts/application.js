@@ -12,5 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require twitter/bootstrap
 //= require turbolinks
+//= require image-picker.min
 //= require_tree .
+
+$(function(){
+  $("select").imagepicker()
+});
