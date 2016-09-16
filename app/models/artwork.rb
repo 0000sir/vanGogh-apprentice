@@ -11,7 +11,7 @@ class Artwork < ApplicationRecord
 	STATUS = %w{等待中 转换中 完成 失败}
 	
 	before_create :set_status
-	#after_create :convert
+	after_create :convert
 	
 	def set_status
 		self.status = 0
