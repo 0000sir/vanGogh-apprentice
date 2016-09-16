@@ -18,7 +18,10 @@ class Artwork < ApplicationRecord
 	end
 	
 	def call_it_back!
-	  p self.callback
+	  #p self.callback
+	  RestClient.post(self.callback, 
+	    "source"=>self.source_file_fingerprint, 
+	    "output"=>File.new(self.output_file.path))
 	end
 	
 	
