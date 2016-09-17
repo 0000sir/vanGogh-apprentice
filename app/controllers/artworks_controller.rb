@@ -34,7 +34,7 @@ class ArtworksController < ApplicationController
       @artwork = Artwork.new(artwork_params)
     else
       @artwork = exsiting 
-      @artwork.call_it_back!
+      @artwork.call_it_back! if @artwork.status==2
     end
 
     respond_to do |format|

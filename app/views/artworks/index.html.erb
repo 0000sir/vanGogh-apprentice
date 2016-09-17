@@ -20,7 +20,7 @@
         <td><%= image_tag artwork.source_file.url(:medium) %></td>
         <td><%= image_tag artwork.style.image.url(:medium) %></td>
         <td><%= image_tag artwork.output_file.url(:medium) %></td>
-        <td><%= artwork.status %></td>
+        <td><%= Artwork::STATUS[artwork.status] %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_artwork_path(artwork), :class => 'btn btn-default btn-xs' %>
