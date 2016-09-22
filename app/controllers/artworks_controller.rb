@@ -28,13 +28,13 @@ class ArtworksController < ApplicationController
   # POST /artworks.json
   def create
     exsiting = Artwork.where(:source_file_fingerprint=>artwork_params[:source_file_fingerprint],
-               :style_id=>artwork_params[:style_id]).first
+               :style_id=>artwork_params[:style_id], :status=>2).first
     
     if exsiting.nil?
       @artwork = Artwork.new(artwork_params)
     else
       @artwork = exsiting 
-      @artwork.call_it_back! if @artwork.status==2
+      @artwork.call_it_back!
     end
 
     respond_to do |format|

@@ -3,34 +3,13 @@
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:source_file_file_name) %>:</strong></dt>
-  <dd><%= @artwork.source_file_file_name %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:source_file_content_type) %>:</strong></dt>
-  <dd><%= @artwork.source_file_content_type %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:source_file_file_size) %>:</strong></dt>
-  <dd><%= @artwork.source_file_file_size %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:source_file_updated_at) %>:</strong></dt>
-  <dd><%= @artwork.source_file_updated_at %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:output_file_file_name) %>:</strong></dt>
-  <dd><%= @artwork.output_file_file_name %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:output_file_content_type) %>:</strong></dt>
-  <dd><%= @artwork.output_file_content_type %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:output_file_file_size) %>:</strong></dt>
-  <dd><%= @artwork.output_file_file_size %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:output_file_updated_at) %>:</strong></dt>
-  <dd><%= @artwork.output_file_updated_at %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:status) %>:</strong></dt>
-  <dd><%= @artwork.status %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:ext_arg) %>:</strong></dt>
-  <dd><%= @artwork.ext_arg %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:style_id) %>:</strong></dt>
-  <dd><%= @artwork.style_id %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:source_file_fingerprint) %>:</strong></dt>
-  <dd><%= @artwork.source_file_fingerprint %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:callback) %>:</strong></dt>
-  <dd><%= @artwork.callback %></dd>
-</dl>
+<%= image_tag @artwork.source_file.url(:medium)%>
+<span style="font-size:10em;">+</span>
+<%= image_tag @artwork.style.image.url(:medium) %>
+<span style="font-size:10em;">=</span>
+<div style="margin:1em;padding:0.5em;">
+<%= image_tag @artwork.output_file.url(:large) %>
+</div>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
               artworks_path, :class => 'btn btn-default'  %>

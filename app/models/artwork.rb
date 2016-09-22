@@ -19,29 +19,48 @@ class Artwork < ApplicationRecord
 	
 	def call_it_back!
 	  #p self.callback
+          begin
 	  RestClient.post(self.callback, 
 	    "source"=>self.source_file_fingerprint, 
 	    "output"=>File.new(self.output_file.path))
+          rescue
+            logger.info "error in callback"
+          end
+	end
+	
+	def clone_from_exist
+	  exsiting = Artwork.where(:source_file_fingerprint=>self.source_file_fingerprint,
+               :style_id=>self.style_id, :status=>2).first
+    unless exsiting.nil?
+      self.output_file = File.new(exsiting.output_file.path)
+      self.save
+      return true
+    end
+    return false
 	end
 	
 	
 	:private
 		def convert
-			output = "/tmp/out_#{self.id}.jpg"
-			self.status = 1
-			self.save
-			cmd = "#{Rails.root}/bin/convert.sh #{self.style.image.path((:large))} #{self.source_file.path(:large)} #{self.ext_arg} #{output}"
-			result = system(cmd)
-			if result
-				self.status = 2
-				self.output_file = File.open output
-				self.save
-				self.call_it_back!
-			else
-				self.status = 3
+		  unless self.clone_from_exist
+        output = "/tmp/out_#{self.id}.jpg"
+        self.status = 1
+        self.save
+        cmd = "#{Rails.root}/bin/convert.sh #{self.style.image.path((:large))} #{self.source_file.path(:large)} #{self.ext_arg} #{output}"
+        result = system(cmd)
+        if result
+          self.status = 2
+          self.output_file = File.open output
+          self.save
+          self.call_it_back!
+        else
+          self.status = 3
+        end
+        self.save
+      else
+        self.call_it_back!
 			end
-			self.save
 		end
-		handle_asynchronously :convert, :queue=>"paint"
+		#handle_asynchronously :convert, :queue=>"paint"
 		
 end
