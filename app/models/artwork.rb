@@ -1,11 +1,9 @@
 class Artwork < ApplicationRecord
 	has_attached_file :source_file, styles: { medium: "300x300>", thumb: "100x100>", large: "600x600>" }, default_url: "/images/:style/missing.jpg"
-	#has_attached_file :style_file, styles: { medium: "300x300>", thumb: "100x100>", large: "600x600>" }, default_url: "/images/:style/missing.jpg"
 	has_attached_file :output_file, styles: { medium: "300x300>", thumb: "100x100>", large: "1024x1024>" }, default_url: "/images/:style/missing.jpg"
 	belongs_to :style
 	
 	validates_attachment_content_type :source_file, content_type: /\Aimage/
-	#validates_attachment_content_type :style_file, content_type: /\Aimage/
 	validates_attachment_content_type :output_file, content_type: /\Aimage/
 	
 	STATUS = %w{等待中 转换中 完成 失败}
@@ -40,13 +38,13 @@ class Artwork < ApplicationRecord
 	end
 	
 	
-	:private
+	#:private
 		def convert
 		  unless self.clone_from_exist
         output = "/tmp/out_#{self.id}.jpg"
         self.status = 1
         self.save
-        cmd = "#{Rails.root}/bin/convert.sh #{self.style.image.path((:large))} #{self.source_file.path(:large)} #{self.ext_arg} #{output}"
+        cmd = "#{Rails.root}/bin/convert.sh #{self.style.trained_model.path} #{self.source_file.path(:large)} #{self.ext_arg} #{output}"
         result = system(cmd)
         if result
           self.status = 2
@@ -61,6 +59,6 @@ class Artwork < ApplicationRecord
         self.call_it_back!
 			end
 		end
-		#handle_asynchronously :convert, :queue=>"paint"
+		handle_asynchronously :convert, :queue=>"paint"
 		
 end

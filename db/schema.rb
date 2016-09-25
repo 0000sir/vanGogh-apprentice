@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160910105632) do
+ActiveRecord::Schema.define(version: 20160924092918) do
 
   create_table "artworks", force: :cascade do |t|
     t.string   "source_file_file_name"
@@ -51,8 +51,13 @@ ActiveRecord::Schema.define(version: 20160910105632) do
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.string   "image_fingerprint"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.string   "trained_model_file_name"
+    t.string   "trained_model_content_type"
+    t.integer  "trained_model_file_size"
+    t.datetime "trained_model_updated_at"
+    t.string   "trained_model_fingerprint"
   end
 
 end
