@@ -54,3 +54,4 @@ gem 'daemons'
 gem 'rest-client'
 gem "less-rails"
 gem "twitter-bootstrap-rails"
+gem "god"
