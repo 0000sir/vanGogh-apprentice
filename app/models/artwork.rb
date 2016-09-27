@@ -40,7 +40,7 @@ class Artwork < ApplicationRecord
 	
 	#:private
 		def convert
-		  unless self.clone_from_exist
+		  unless self.status==2 || self.clone_from_exist
         output = "/tmp/out_#{self.id}.jpg"
         self.status = 1
         self.save
